@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        img {
+            display: block;
+        }
+
+        body {
+            -moz-user-select: none;
+            /*火狐*/
+            -webkit-user-select: none;
+            /*webkit浏览器*/
+            -ms-user-select: none;
+            /*IE10*/
+            -khtml-user-select: none;
+            /*早期浏览器*/
+            user-select: none;
+        }
+
+        .content {
+            display: inline-block;
+            position: absolute;
+            left: 100px;
+        }
+
+        .barBac {
+            width: 400px;
+            height: 40px;
+            background-color: #ccc;
+            position: relative;
+            margin-top: -4px
+        }
+
+        .bar {
+            width: 50px;
+            height: 40px;
+            background-color: red;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .imgBox {
+            width: 400px;
+            height: 300px;
+            display: inline-block;
+        }
+
+        .imgBox img {
+            display: inline-block;
+            width: 100%;
+            height: 100%
+        }
+
+        .smallCube {
+            width: 60px;
+            height: 60px;
+            background-color: red;
+            position: absolute;
+            left: 0;
+            top: 0;
+            overflow: hidden;
+            box-sizing: border-box;
+            border: 4px solid rgba(226, 200, 192, 0.5);
+            z-index: 3;
+            font-size: 0
+        }
+
+        .cubeImg {
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            top: 0;
+            font-size: 0
+        }
+
+        .smallCube img {
+            width: 400px;
+            height: 300px;
+            position: absolute;
+        }
+
+        .bacCube {
+            width: 60px;
+            height: 60px;
+            background-color: #fff;
+            opacity: 0.7;
+            position: absolute;
+            z-index: 2
+        }
+    </style>
+</head>
+
+<body>
+    <!--图片-->
+    <div class="content">
+        <div class="imgBox">
+            <img src="./xzg.png" alt="">
+        </div>
+        <!--滑动条-->
+        <div class="barBac">
+            <div class="bar"></div>
+        </div>
+
+        <div class="cubeImg">
+            <div class="smallCube"><img src="./xzg.png"></div>
+        </div>
+        <div class="bacCube"></div>
+    </div>
+
+    <!--脚本-->
+    <script>
+        var x, mouse_x;
+        var mv = false;
+        var newx;
+        var _x;
+        var wide = false;
+        var roundPlace_x;
+        var roundPlace_y;
+        $().ready(function () {
+            /*滑动条*/
+            $(".bar").mousedown(function (e) {
+                mv = true;
+                _x = e.pageX - parseInt($(".bar").css("left"));//
+                x = e.target.clientLeft;
+            });
+
+
+            $(document).mouseup(function (e) {
+                mv = false;
+            });
+
+            $(document).mousemove(function (e) {
+                if (mv) {
+                    newx = e.pageX - _x;
+                    $(".bar").css("left", (newx > 0 && newx < 350) ? newx : 0);
+                    $(".smallCube").css("left", (newx > 0 && newx < 350) ? newx : 0);
+                    if (roundPlace_x - 2 < newx && newx < roundPlace_x + 2) {
+                        alert("验证成功");
+                        window.location = "http://www.baidu.com"
+                    }
+                }
+            });
+            /*取一个从-340到0的随机数*/
+            roundPlace_x = Math.random().toFixed(1) * 340;
+            roundPlace_y = Math.random().toFixed(1) * 240;
+            $(".smallCube img").css({ "left": -roundPlace_x, "top": -roundPlace_y - 4 });
+            $(".smallCube").css("top", roundPlace_y);
+            $(".bacCube").css({ "top": roundPlace_y, "left": roundPlace_x });
+        });
+    </script>
+</body>
+
+</html>
